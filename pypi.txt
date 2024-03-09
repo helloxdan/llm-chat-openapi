@@ -1,0 +1,2 @@
+
+twine upload dist/* -u __token__ -p pypi-AgEIcHlwaS5vcmcCJDg5MDIwNjI0LWYwMjktNDE3Mi1iNzk3LTczNGJiNjhlMWU4MAACKlszLCIzYjEzNjliNC0wMzBiLTRiNTUtOTA3YS1iM2M1NjY5OTdmODQiXQAABiCaAODazOP5e29kq8V4Ml5DAosG1Ek4AzNNXjz0utXdbA

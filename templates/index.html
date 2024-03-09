@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天机器人</title>
+    <style>
+        .outer {
+            width: 900px;
+            min-height: 600px;
+            background-color: lightgray;
+            border-radius: 20px;
+            margin-top: 5%;
+            margin-left: 25%;
+        }
+
+        .title {
+            font-size: 36px;
+            text-align: center;
+            padding-top: 15px;
+        }
+
+        .content {
+            min-height: 460px;
+        }
+
+        .chat {
+            position: relative;
+            margin: 20px auto;
+            line-height: 15px;
+            color: lightgray;
+            border-radius: 10px;
+            font-family: "Microsoft soft";
+            width: -webkit-fit-content;
+            max-width: 50%;
+        }
+
+        .chat:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 8px solid;
+        }
+
+        .left {
+            margin-left: 20px;
+            background-color: orange;
+            text-align: left;
+            padding: 5px 10px;
+        }
+
+        .left:after {
+            border-right-color: orange;
+            top: 50%;
+            right: 100%;
+            margin-top: -9px;
+        }
+
+        .right {
+            margin-right: 20px;
+            background-color: deepskyblue;
+            text-align: left;
+            padding: 5px 10px;
+        }
+
+        .right:after {
+            border-left-color: deepskyblue;
+            left: 100%;
+            top: 50%;
+            margin-top: -7px;
+        }
+
+        .input-box {
+            position: relative;
+            text-align: center;
+        }
+
+        .inp {
+            outline-style: none;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 13px 14px;
+            width: 420px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .inp:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+        }
+
+        .send {
+            outline-style: none;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+            box-sizing: content-box;
+            padding: 10px 14px;
+            margin: 7px 0px;
+            font-size: 16px;
+            font-weight: 700;
+            background-color: orange;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: black;
+        }
+
+    </style>
+</head>
+
+
+<body>
+<div class="outer">
+    <!--  标题  -->
+    <div class="title">{{ context.title }}</div>
+    <!--  内容  -->
+    <div id="chatId" class="content">
+    </div>
+    <!--  输入框  -->
+    <div class="input-box">
+        <input id="inputCnt" type="text" placeholder="在这里输入文字" class="inp"/>
+        <button class="send" onclick="sendmsg()">发送</button>
+    </div>
+</div>
+</body>
+<!-- js 代码 -->
+<script type="text/javascript">
+    let chat_list = []
+    const sendmsg = () => {
+        const chat_input = document.getElementById("inputCnt")
+        const chat_cnt = chat_input.value.trim()
+        if (chat_cnt.length == 0) {
+            // 内容为空直接返回
+            return
+        }
+        // 清空input内容
+        chat_input.value = ""
+        append_html(chat_list.length, chat_cnt)
+        chat_list.push("\nHuman:" + chat_cnt)
+        let req_options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/json", "Accept": "application/json; charset=utf-8"},
+            body: JSON.stringify({"cnt": chat_list})
+        };
+        fetch("http://{{ context.host }}:{{ context.port }}/dialog", req_options)
+            .then(res => {
+                return res.text()
+            }).then(res => {
+            const json_cnt = JSON.parse(res)
+            append_html(chat_list.length, json_cnt.context)
+            chat_list.push(json_cnt.context)
+        }).catch(error => {
+            console.log('error', error)
+        });
+
+    }
+
+    document.onkeydown = () => {
+        const ev = window.event
+        if (ev.keyCode == 13) {
+            ev.preventDefault()
+            sendmsg()
+        }
+    }
+
+    const append_html = (index, chat_cnt) => {
+        let chat_div = document.getElementById("chatId")
+        let node_div = document.createElement("div")
+        let node_pre = document.createElement("pre")
+        if (index % 2 == 1) {
+            node_div.setAttribute("class", "chat left")
+        } else {
+            node_div.setAttribute("class", "chat right")
+        }
+        node_pre.innerHTML = chat_cnt
+        node_div.appendChild(node_pre)
+        chat_div.appendChild(node_div)
+    }
+</script>
+
+</html>

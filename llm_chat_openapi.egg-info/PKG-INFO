@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: llm-chat-openapi
+Version: 1.0.6
+Summary: chat api  collection for popular LLM
+Home-page: https://github.com/helloxdan/llm-chat-openapi
+Author: helloxdan
+Author-email: hello.xdan@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+chat api  collection for popular LLM

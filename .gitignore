@@ -1,2 +1,3 @@
 /.env
 .idea/*
+llm_chat_openapi.egg-info/*

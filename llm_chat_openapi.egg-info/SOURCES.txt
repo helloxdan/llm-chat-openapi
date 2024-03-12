@@ -1,0 +1,8 @@
+LICENSE
+README.md
+setup.py
+llm_chat_openapi.egg-info/PKG-INFO
+llm_chat_openapi.egg-info/SOURCES.txt
+llm_chat_openapi.egg-info/dependency_links.txt
+llm_chat_openapi.egg-info/requires.txt
+llm_chat_openapi.egg-info/top_level.txt

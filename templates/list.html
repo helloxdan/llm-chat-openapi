@@ -1,0 +1,12 @@
+<!doctype html>
+<title>人脸列表</title>
+<ul>
+    {% for file in imgs %}
+    <li>
+        <img src="{{ url_for('uploaded_file', filename=file) }}" />
+    </li>
+    <li>
+        <a href="{{ url_for('uploaded_file', filename=file) }}" download>{{ file }}</a>
+    </li>
+    {% endfor %}
+</ul>
